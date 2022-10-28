@@ -31,6 +31,8 @@ Find screenshots below
 ### Use #dapp for public tweets
 
 ## ToDo
+
+###DONE
 - [x] Create a household
 - [x] Invite someone to a household
 - [x] Enter a household by invite
@@ -42,26 +44,27 @@ Find screenshots below
 - [x] Delete product
 - [x] Rules to put in a "to buy list"
 - [x] Estimated prices and "to buy list" with estimated value to be spent
-- [ ] Sub-shelves to a product that can have multiple brands/types
 - [x] Share list in 3rd party apps
 - [x] Allow user to automatically restock a product from "to buy list"
-- [ ] Allow user to use different currencies based on his preferences
+
+### WORKING ON
+- [ ] disable <b>add product</b> button if no shelve have been created.
+- [ ] Sub-shelves to a product that can have multiple brands/types
 - [ ] Delete a household
 - [ ] Global "to buy list"
+- [ ] Make it possible to submit the product expiration date when purchasing.
+- [ ] create an alert for products that have already been purchased and that the expiration date is about to expire.
+
+### FUTURE FEATURES
+- [ ] Save list for future analysis
+
+    Ex: This month I spent more/less than the previous one
+- [ ] Allow user to use different currencies based on his preferences
 - [ ] Temporary Product classification
     
     Ex: Something you need to buy when going to groceries but it's not an every month expense
 - [ ] Implement a invalidated Products Screens for after a temporary product has been bought not 
   be permanently deleted unless the user explicitly asks for.
-- [ ] Save list for future analysis
 
-    Ex: This month I spent more/less than the previous one
 - [ ] Create a dashboard to track expenses bases on the saved lists
-- [ ] Make it possible to submit the product expiration date when purchasing.
-- [ ] create an alert for products that have already been purchased and that the expiration date is about to expire.
-- [ ] disable <b>add product</b> button if no shelve have been created.
-
-
-
-
 
