@@ -8,7 +8,7 @@ This project is not a starting point for a Flutter Application.
 
 I am giving legs to a project I designed a couple months ago while planning to 
 move from my parents home, though it was just a design I took the last 3 weeks or so 
-(files creation dated 29th July) to eliminate all sorts of procrastination and made it a priority 
+to eliminate all sorts of procrastination and made it a priority 
 to develop and now testing with my younger brother who is giving me insights on how we can make it better.
 
 Find screenshots below
