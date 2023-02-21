@@ -5,7 +5,6 @@ import 'package:despensa/models/Familia.dart';
 import 'package:despensa/models/User.dart';
 import 'package:despensa/utils/GetIt.dart';
 import 'package:despensa/utils/constantes.dart';
-import 'package:despensa/utils/sharedPreferences.dart';
 import 'package:flutter/cupertino.dart';
 
 import 'auth_service.dart';
@@ -99,7 +98,7 @@ class FamiliaService with ChangeNotifier {
           .update({"familias": familias}).then((value) {
         _familiaId = familiaId;
         notifyListeners();
-        getIt<UserState>().saveFamilyId(_familiaId);
+        // getIt<UserState>().saveFamilyId(_familiaId);
         return "Faz agora parte da Família, Parabéns";
       }).catchError(
               (error) => "Parece que teve problemas com o registo\n $error");

@@ -1,3 +1,4 @@
+import 'package:despensa/models/Prateleira.dart';
 import 'package:despensa/screens/create_family_screen.dart';
 import 'package:despensa/screens/dashboard.dart';
 import 'package:despensa/screens/edit_product_screen.dart';
@@ -56,7 +57,8 @@ void main() {
       providers: [
         provider.ChangeNotifierProvider.value(value: AuthService()),
         provider.ChangeNotifierProvider.value(value: FamiliaService()),
-        provider.ChangeNotifierProvider.value(value: ThemeChanger())
+        provider.ChangeNotifierProvider.value(value: ThemeChanger()),
+        provider.ChangeNotifierProvider.value(value: Shelve())
       ],
       child: MyApp(),
     ));

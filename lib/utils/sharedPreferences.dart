@@ -8,7 +8,6 @@ abstract class SharedUserState {
   // Future<dynamic> readTheme(String key);
   // void saveTheme(String key, dynamic value);
   // Future<bool> deleteTheme(String key);
-
 }
 
 class UserState implements SharedUserState {
@@ -32,7 +31,7 @@ class UserState implements SharedUserState {
   @override
   void delete() async {
     final prefs = await SharedPreferences.getInstance();
-    prefs.remove(key);
+    await prefs.remove(key);
     // print(value);
   }
 

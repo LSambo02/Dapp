@@ -3,6 +3,7 @@ import 'package:despensa/utils/AppPhoneSize.dart';
 import 'package:despensa/utils/GetIt.dart';
 import 'package:despensa/utils/constantes.dart';
 import 'package:despensa/utils/sharedPreferences.dart';
+import 'package:despensa/widgets/custom_rounded_button.dart';
 import 'package:flutter/material.dart';
 
 class FamilyScreen extends StatefulWidget {
@@ -92,19 +93,10 @@ class _FamilyScreenState extends State<FamilyScreen> {
               Container(
                 width: 150,
                 margin: EdgeInsets.only(bottom: 15),
-                child: ElevatedButton(
-                  child: Text(
-                    'ENTRAR NUMA FAMILIA',
-                    textAlign: TextAlign.center,
-                    // style: TextStyle(color: Colors.blueGrey[400]),
-                  ),
-                  onPressed: () =>
+                child: CustomRoundedButton(
+                  text: 'Família Existente',
+                  action: () =>
                       Navigator.pushNamed(context, enter_family_screen),
-                  style: ButtonStyle(
-                    shape: MaterialStateProperty.all<OutlinedBorder>(
-                        RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10))),
-                  ),
                 ),
               ),
               Text("OR"),

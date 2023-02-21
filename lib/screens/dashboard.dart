@@ -1,3 +1,5 @@
+import 'dart:developer' as dev;
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:despensa/models/Prateleira.dart';
 import 'package:despensa/services/auth_service.dart';
@@ -9,11 +11,16 @@ import 'package:despensa/utils/app_colors.dart';
 import 'package:despensa/utils/constantes.dart';
 import 'package:despensa/utils/sharedPreferences.dart';
 import 'package:despensa/widgets/add_shelve_dialog.dart';
+import 'package:despensa/widgets/family_menu_dialog.dart';
+import 'package:despensa/widgets/new_family_dialog.dart';
 import 'package:despensa/widgets/no_data.dart';
 import 'package:despensa/widgets/remove_shelve_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:speed_dial_fab/speed_dial_fab.dart';
 
+import '../services/produto_service.dart';
+import '../widgets/custom_rounded_button.dart';
+import '../widgets/existing_family_dialog.dart';
 import 'add_product_screen.dart';
 
 class Dashboard extends StatefulWidget {
@@ -26,16 +33,22 @@ class Dashboard extends StatefulWidget {
 class _DashboardState extends State<Dashboard> {
   String familyName = '';
   String user = 'user';
+  late ProdutosServices produtosService;
+
+  var controller = 0;
 
   @override
   void initState() {
+    super.initState();
     getIt<UserState>().readFamilyId().whenComplete(() {}).then((value) {
-      if (value != null)
+      if (value != null) {
+        dev.log('dashboard.dart::: preferences is not null');
         getIt<FamiliaService>().setFamilia(value).whenComplete(() {
           // setState(() {
         }).then((value) {
           setState(() => familyName = value!.nome);
         });
+      }
     });
   }
 
@@ -44,7 +57,8 @@ class _DashboardState extends State<Dashboard> {
     return Scaffold(
         body: SingleChildScrollView(
           physics: NeverScrollableScrollPhysics(),
-          child: Column(
+          child: Stack(
+            alignment: Alignment.topCenter,
             children: [
               Container(
                 padding: EdgeInsets.only(
@@ -53,7 +67,7 @@ class _DashboardState extends State<Dashboard> {
                     right: 20,
                     bottom: 0),
                 margin: EdgeInsets.all(0),
-                height: heightScreen(context) / 5,
+                height: heightScreen(context) / 3,
                 decoration: BoxDecoration(
                     gradient: LinearGradient(
                   colors: shadesOfGrey,
@@ -66,11 +80,25 @@ class _DashboardState extends State<Dashboard> {
                 child: Stack(
                   alignment: Alignment.topRight,
                   children: [
-                    SafeArea(
-                      child: IconButton(
-                          icon: Icon(Icons.settings_outlined),
-                          onPressed: () =>
-                              Navigator.pushNamed(context, settings_screen)),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 15.0, left: 10),
+                      child: Column(
+                        children: [
+                          IconButton(
+                            icon: Icon(
+                              Icons.shopping_basket_outlined,
+                              color: Colors.white,
+                            ),
+                            onPressed: () => Navigator.pushNamed(
+                                context, lista_compras_screen),
+                          ),
+                          IconButton(
+                              icon: Icon(Icons.settings_outlined,
+                                  color: Colors.white),
+                              onPressed: () => Navigator.pushNamed(
+                                  context, settings_screen)),
+                        ],
+                      ),
                     ),
                     Padding(
                       padding: const EdgeInsets.only(top: 50.0, left: 10),
@@ -105,14 +133,19 @@ class _DashboardState extends State<Dashboard> {
                                     children: [
                                       Text(
                                         "Olá, ${getIt<AuthService>().user!.displayName ?? getIt<AuthService>().user!.email} ",
-                                        style: TextStyle(fontSize: 25),
+                                        style: TextStyle(
+                                            fontSize: 25, color: Colors.white),
                                       ),
                                     ],
                                   ),
-                                  // familyName != null
-                                  //     ?
-                                  Text("Lar $familyName")
-                                  // : SizedBox(),
+                                  familyName.isNotEmpty
+                                      ? Text(
+                                          "Família $familyName",
+                                          style: TextStyle(color: Colors.white),
+                                        )
+                                      : Text("Sem Família",
+                                          style:
+                                              TextStyle(color: Colors.white)),
                                 ],
                               ),
                             ],
@@ -124,12 +157,32 @@ class _DashboardState extends State<Dashboard> {
                 ),
               ),
               Container(
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius:
+                        BorderRadius.only(topLeft: Radius.circular(70))),
                 height: heightScreen(context) / 1.2,
-                margin: EdgeInsets.all(0),
+                margin: EdgeInsets.only(
+                  top: heightScreen(context) / 4.5,
+                ),
                 child: getIt<FamiliaService>().familia.id == ''
                     ? Center(
-                        child: Text("SEM DADOS"),
-                      )
+                        child: CustomRoundedButton(
+                        text: 'Aderir a Família',
+                        action: () => showDialog(
+                            context: context,
+                            builder: (BuildContext context) => FamilyDialog(
+                                text1: 'Família Existente',
+                                text2: 'Criar Família',
+                                action1: () => showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) =>
+                                        ExistingFamilyDialog()),
+                                action2: () => showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) =>
+                                        NewFamilyDialog()))),
+                      ))
                     : StreamBuilder<QuerySnapshot>(
                         stream: getIt<PrateleiraService>()
                             .familias
@@ -154,12 +207,13 @@ class _DashboardState extends State<Dashboard> {
                               child: Text("SEM DADOS"),
                             );
                           }
-
+                          List shlvs = [];
+                          for (var shlv in snapshot.data!.docs) {}
                           return snapshot.data!.docs.length == 0
                               ? NoData()
                               : ListView(
                                   children: snapshot.data!.docs
-                                      .map((DocumentSnapshot document) {
+                                      .map<Widget>((DocumentSnapshot document) {
                                     Map<String, dynamic> _prateleirasMap =
                                         document.data()!
                                             as Map<String, dynamic>;
@@ -170,50 +224,103 @@ class _DashboardState extends State<Dashboard> {
                                     getIt<PrateleiraService>()
                                         .addPrateleirasTemp(
                                             shelve.nome, document.id);
+                                    String nrItens = '0';
+                                    // if (controller == 0) {
+                                    //   log('okay');
+                                    produtosService =
+                                        ProdutosServices(shelve.nome);
+                                    produtosService
+                                        .getAllProducts(snapshot.data!.docs);
+                                    // setState(() {
+                                    controller += 1;
+                                    // produtosService
+                                    //     .countShelveProducts(shelve)
+                                    //     .then<Widget>((value) {
+                                    //   // setState(() {
+                                    //   nrItens = value.toString();
+                                    //   // });
+                                    //   log('dashboard message: $nrItens');
 
-                                    return Dismissible(
-                                      key: Key(document.id),
-                                      direction: DismissDirection.endToStart,
-                                      background: Container(
-                                        color: Colors.redAccent,
-                                      ),
-                                      onDismissed: (direction) {
-                                        setState(() {
-                                          getIt<PrateleiraService>()
-                                              .deleteShelve(
-                                                  shelve.nome, document.id);
+                                    // });
+                                    // }
+
+                                    return FutureBuilder<int?>(
+                                        future: produtosService
+                                            .countShelveProducts(shelve),
+                                        builder: (context, snapshot) {
+                                          return Padding(
+                                            padding: const EdgeInsets.only(
+                                                bottom: 10.0),
+                                            child: Dismissible(
+                                              key: Key(document.id),
+                                              direction:
+                                                  DismissDirection.endToStart,
+                                              background: Container(
+                                                color: Colors.red,
+                                              ),
+                                              onDismissed: (direction) {
+                                                setState(() {
+                                                  getIt<PrateleiraService>()
+                                                      .deleteShelve(shelve.nome,
+                                                          document.id);
+                                                });
+                                              },
+                                              confirmDismiss: (direction) =>
+                                                  showDialog(
+                                                      context: context,
+                                                      barrierDismissible: true,
+                                                      builder: (BuildContext
+                                                          context) {
+                                                        return RemoveShelveDialog(
+                                                          width: widthScreen(
+                                                              context),
+                                                        );
+                                                      }),
+                                              child: Card(
+                                                elevation: 5,
+                                                margin: EdgeInsets.all(0),
+                                                shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.only(
+                                                            topLeft: Radius
+                                                                .circular(60),
+                                                            bottomLeft:
+                                                                Radius.circular(
+                                                                    60))),
+                                                child: new ListTile(
+                                                  title: new Text(
+                                                    shelve.nome,
+                                                    style: TextStyle(
+                                                        fontSize: 20,
+                                                        color: Colors.black),
+                                                  ),
+                                                  leading: Icon(Icons
+                                                      .amp_stories_outlined),
+                                                  subtitle: new Text(
+                                                    '${snapshot.data.toString()} itens',
+                                                    style: TextStyle(
+                                                        fontSize: 20,
+                                                        fontWeight:
+                                                            FontWeight.w100,
+                                                        color: Colors.black),
+                                                  ),
+                                                  onTap: () =>
+                                                      Navigator.pushNamed(
+                                                          context,
+                                                          produtos_screen,
+                                                          arguments:
+                                                              shelve.nome),
+                                                ),
+                                              ),
+                                            ),
+                                          );
                                         });
-                                      },
-                                      confirmDismiss: (direction) => showDialog(
-                                          context: context,
-                                          barrierDismissible: true,
-                                          builder: (BuildContext context) {
-                                            return RemoveShelveDialog(
-                                              width: widthScreen(context),
-                                            );
-                                          }),
-                                      child: new ListTile(
-                                        title: new Text(
-                                          shelve.nome,
-                                          style: TextStyle(
-                                              fontSize: 20,
-                                              color: Colors.black),
-                                        ),
-                                        leading:
-                                            Icon(Icons.amp_stories_outlined),
-                                        subtitle: Divider(
-                                          thickness: 2,
-                                        ),
-                                        onTap: () => Navigator.pushNamed(
-                                            context, produtos_screen,
-                                            arguments: shelve.nome),
-                                      ),
-                                    );
+                                    // });
                                   }).toList(),
                                 );
                         },
                       ),
-              )
+              ),
             ],
           ),
         ),
@@ -241,6 +348,7 @@ class _DashboardState extends State<Dashboard> {
                 }),
           ],
           primaryBackgroundColor: Colors.blueGrey,
+          primaryForegroundColor: Colors.white,
         ));
   }
 }

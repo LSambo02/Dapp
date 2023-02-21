@@ -8,6 +8,8 @@ import 'package:despensa/utils/common_services.dart';
 import 'package:despensa/utils/constantes.dart';
 import 'package:flutter/cupertino.dart';
 
+import '../models/Prateleira.dart';
+import 'ListaComprasController.dart';
 import 'prateleira_service.dart';
 
 class ProdutosServices extends ChangeNotifier {
@@ -26,6 +28,68 @@ class ProdutosServices extends ChangeNotifier {
   produtosCollection() => produtos;
   CommonServices commonServices = CommonServices();
   List<Produto> _listaDeCompra = [];
+
+  Future getAllProducts(List prateleiras) async {
+    for (var prat in prateleiras) {
+      Map<String, dynamic> _prateleiraMap =
+          prat.data()! as Map<String, dynamic>;
+
+      Shelve shelve = Shelve.fromJson(_prateleiraMap);
+
+      CollectionReference snapshots = familias
+        ..doc(getIt<FamiliaService>().familia.id)
+            .collection(prateleiras_colecao)
+            .doc(getIt<PrateleiraService>().prateleirasMap[shelve.nome])
+            .collection(produtos_colecao)
+            .get();
+
+      Stream stream = snapshots.snapshots();
+
+      // AsyncSnapshot asyncSnapshot = stream.;
+
+      List prods = await snapshots.snapshots().toList();
+      log('produto_service.dart::: product: ');
+
+      for (var prod in prods) {
+        Map<String, dynamic> _prodMap = prod.data()! as Map<String, dynamic>;
+
+        Produto produto = Produto.fromJson(_prodMap);
+
+        log('produto_service.dart::: product: ${produto.toJson()}');
+
+        if (produto.qntdMinima == null || produto.qntdMinima == 0) {
+          int percent =
+              ((produto.disponivel * 100) / produto.quantidade).round();
+          if (percent <= getIt<FamiliaService>().familia.qntdMinima) {
+            getIt<ListaComprasController>().addProductItem(produto);
+          }
+        } else {
+          if (produto.qntdMinima >= produto.disponivel) {
+            getIt<ListaComprasController>().addProductItem(produto);
+          }
+        }
+      }
+    }
+  }
+
+  Future<int?> countShelveProducts(Shelve shelve) async {
+    CollectionReference snapshots = familias
+        .doc(getIt<FamiliaService>().familia.id)
+        .collection(prateleiras_colecao)
+        .doc(getIt<PrateleiraService>().prateleirasMap[shelve.nome])
+        .collection(produtos_colecao);
+
+    AggregateQuerySnapshot _nrItens = await snapshots.count().get();
+
+    int nrItens = _nrItens.count;
+
+    log('produto_service message: $nrItens');
+    shelve.setNrItens(nrItens);
+    // getIt<Shelve>().setNrItens(nrItens);
+    // }
+
+    return nrItens;
+  }
 
   Future<String> addProduto(Produto produto) async {
     bool _alreadyExists =

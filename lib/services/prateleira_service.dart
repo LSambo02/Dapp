@@ -20,6 +20,7 @@ class PrateleiraService with ChangeNotifier {
     "Escolha a Prateleira": "Escolha a Prateleira"
   };
   CommonServices commonServices = CommonServices();
+
   Future<String> addShelve(Shelve prateleira) async {
     bool _alreadyExists = await commonServices.alreadyExists(
         prateleira.nome, prateleiras_colecao);
@@ -63,7 +64,6 @@ class PrateleiraService with ChangeNotifier {
           _prateleiraId = doc.id;
           notifyListeners();
           //pegar o id do documento que se pretende actualizar
-
         }
       });
     });

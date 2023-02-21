@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../utils/AppPhoneSize.dart';
+
 class CustomTextField extends StatefulWidget {
   String? validatorText, hintText, label;
   void Function(String value)? onChange;
@@ -35,7 +37,10 @@ class _CustomTextFieldState extends State<CustomTextField> {
             child: RichText(
                 text: TextSpan(
               text: widget.label ?? '',
-              style: TextStyle(color: Colors.blueGrey),
+              style: TextStyle(
+                  color: Colors.blueGrey,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600),
               children: [
                 TextSpan(
                   text: widget.isOptional! ? '' : '*',
@@ -43,49 +48,65 @@ class _CustomTextFieldState extends State<CustomTextField> {
               ],
             ))),
         Container(
-          margin: EdgeInsets.only(bottom: 20, left: 12, right: 12),
-          padding: EdgeInsets.all(8),
-          decoration: BoxDecoration(
-              border: Border.all(color: Colors.blueGrey),
-              borderRadius: BorderRadius.circular(10)),
-          child: TextFormField(
-            obscureText: widget.isPasswordField! ? isObscureText : false,
-            validator: widget.validator!
-                ? (val) {
-                    return widget.validatorText;
-                  }
-                : (val) {
-                    return val!.isEmpty
-                        ? widget.validatorText != null
-                            ? widget.validatorText!
-                            : null
-                        : null;
-                  },
-            keyboardType: widget.inputType,
-            style: TextStyle(color: Colors.blueGrey),
-            controller: widget.controller,
-            decoration: InputDecoration(
-                hintText: widget.hintText,
-                border: InputBorder.none,
-                focusedBorder: InputBorder.none,
-                enabledBorder: InputBorder.none,
-                errorBorder: InputBorder.none,
-                disabledBorder: InputBorder.none,
-                suffixIcon: widget.isPasswordField!
-                    ? GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            isObscureText = !isObscureText;
-                          });
+          width: widthScreen(context) / 1.15,
+          margin: EdgeInsets.only(bottom: 20),
+          child: Material(
+            elevation: 5.0,
+            borderRadius: BorderRadius.circular(60),
+            // shadowColor: Colors.blue,
+            child: Center(
+              child: Container(
+                margin: EdgeInsets.all(10),
+                // padding: EdgeInsets.all(
+                //   10,
+                // ),
+
+                child: TextFormField(
+                  obscureText: widget.isPasswordField! ? isObscureText : false,
+                  validator: widget.validator!
+                      ? (val) {
+                          return widget.validatorText;
+                        }
+                      : (val) {
+                          return val!.isEmpty
+                              ? widget.validatorText != null
+                                  ? widget.validatorText!
+                                  : null
+                              : null;
                         },
-                        child: Icon(isObscureText
-                            ? Icons.visibility_off
-                            : Icons.visibility),
-                      )
-                    : SizedBox(),
-                hintStyle: TextStyle(color: Colors.blueGrey, fontSize: 17)),
-            cursorColor: Colors.blueGrey,
-            onChanged: widget.onChange,
+                  keyboardType: widget.inputType,
+                  style: TextStyle(color: Colors.blueGrey),
+                  textAlign: TextAlign.center,
+                  controller: widget.controller,
+                  decoration: InputDecoration(
+                      hintText: widget.hintText,
+                      focusColor: Colors.lightBlueAccent,
+                      border: InputBorder.none,
+                      focusedBorder: InputBorder.none,
+                      enabledBorder: InputBorder.none,
+                      errorBorder: InputBorder.none,
+                      disabledBorder: InputBorder.none,
+                      suffixIcon: widget.isPasswordField!
+                          ? GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  isObscureText = !isObscureText;
+                                });
+                              },
+                              child: Icon(isObscureText
+                                  ? Icons.visibility_off
+                                  : Icons.visibility),
+                            )
+                          : SizedBox(),
+                      hintStyle: TextStyle(
+                          color: Colors.blueGrey,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w100)),
+                  cursorColor: Colors.blueGrey,
+                  onChanged: widget.onChange,
+                ),
+              ),
+            ),
           ),
         ),
       ],

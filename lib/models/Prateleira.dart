@@ -2,15 +2,22 @@ import 'package:flutter/material.dart';
 
 class Shelve with ChangeNotifier {
   String? _nome;
+  int? _nrItens = 0;
 
-  Shelve(this._nome);
+  Shelve();
 
   Shelve.empty();
 
   String get nome => _nome!;
+  int? get nrItens => _nrItens;
 
   setNome(String value) {
     _nome = value;
+    notifyListeners();
+  }
+
+  setNrItens(int value) {
+    _nrItens = value;
     notifyListeners();
   }
 

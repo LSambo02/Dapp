@@ -1,3 +1,4 @@
+import 'package:despensa/models/Prateleira.dart';
 import 'package:despensa/services/ListaComprasController.dart';
 import 'package:despensa/services/auth_service.dart';
 import 'package:despensa/services/familia_service.dart';
@@ -17,4 +18,5 @@ void setUpGetIt() {
   getIt.registerLazySingleton(() => ProdutosServices.empty());
   getIt.registerLazySingleton(() => ListaComprasController());
   getIt.registerLazySingleton(() => ThemeChanger());
+  getIt.registerLazySingleton(() => Shelve());
 }
