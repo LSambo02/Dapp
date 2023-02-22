@@ -43,14 +43,14 @@ class _ProductsPageState extends State<ProductsPage> {
       appBar: CustomAppBar(
         title: args.toString(),
         actions: [
-          // Padding(
-          //   padding: const EdgeInsets.only(left: 55.0),
-          //   child: IconButton(
-          //     icon: Icon(Icons.shopping_basket_outlined),
-          //     onPressed: () =>
-          //         Navigator.pushNamed(context, lista_compras_screen),
-          //   ),
-          // ),
+          Padding(
+            padding: const EdgeInsets.only(left: 55.0),
+            child: IconButton(
+              icon: Icon(Icons.shopping_basket_outlined),
+              onPressed: () =>
+                  Navigator.pushNamed(context, lista_compras_screen),
+            ),
+          ),
         ],
       ),
       body: SingleChildScrollView(
