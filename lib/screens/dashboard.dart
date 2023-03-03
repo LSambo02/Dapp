@@ -16,12 +16,10 @@ import 'package:despensa/widgets/new_family_dialog.dart';
 import 'package:despensa/widgets/no_data.dart';
 import 'package:despensa/widgets/remove_shelve_dialog.dart';
 import 'package:flutter/material.dart';
-import 'package:speed_dial_fab/speed_dial_fab.dart';
 
 import '../services/produto_service.dart';
 import '../widgets/custom_rounded_button.dart';
 import '../widgets/existing_family_dialog.dart';
-import 'add_product_screen.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({Key? key}) : super(key: key);
@@ -108,6 +106,7 @@ class _DashboardState extends State<Dashboard> {
                           Row(
                             children: [
                               Container(
+                                width: 100,
                                 margin: EdgeInsets.only(right: 10),
                                 child: ClipOval(
                                   child: getIt<AuthService>().user!.photoURL !=
@@ -171,17 +170,7 @@ class _DashboardState extends State<Dashboard> {
                         text: 'Aderir a Família',
                         action: () => showDialog(
                             context: context,
-                            builder: (BuildContext context) => FamilyDialog(
-                                text1: 'Família Existente',
-                                text2: 'Criar Família',
-                                action1: () => showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) =>
-                                        ExistingFamilyDialog()),
-                                action2: () => showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) =>
-                                        NewFamilyDialog()))),
+                            builder: (BuildContext context) => familyDialog()),
                       ))
                     : StreamBuilder<QuerySnapshot>(
                         stream: getIt<PrateleiraService>()
@@ -207,8 +196,8 @@ class _DashboardState extends State<Dashboard> {
                               child: Text("SEM DADOS"),
                             );
                           }
-                          List shlvs = [];
-                          for (var shlv in snapshot.data!.docs) {}
+                          // List shlvs = [];
+                          // for (var shlv in snapshot.data!.docs) {}
                           return snapshot.data!.docs.length == 0
                               ? NoData()
                               : ListView(
@@ -294,8 +283,8 @@ class _DashboardState extends State<Dashboard> {
                                                         fontSize: 20,
                                                         color: Colors.black),
                                                   ),
-                                                  leading: Icon(Icons
-                                                      .amp_stories_outlined),
+                                                  leading:
+                                                      Image.asset(shelveIcon),
                                                   subtitle: new Text(
                                                     '${snapshot.data.toString()} itens',
                                                     style: TextStyle(
@@ -324,31 +313,53 @@ class _DashboardState extends State<Dashboard> {
             ],
           ),
         ),
-        floatingActionButton: SpeedDialFabWidget(
-          primaryIconExpand: Icons.add,
-          primaryIconCollapse: Icons.clear,
-          secondaryIconsList: [
-            Icons.local_grocery_store_outlined,
-            Icons.amp_stories_outlined,
-          ],
-          secondaryIconsText: [
-            "Adicionar Produto",
-            "Adicionar Prateleira",
-          ],
-          secondaryIconsOnPress: [
-            () => Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => AddProductPage()),
-                ),
-            () => showDialog(
-                context: context,
-                barrierDismissible: true,
-                builder: (BuildContext context) {
-                  return AddShelve(width: widthScreen(context));
-                }),
-          ],
-          primaryBackgroundColor: Colors.blueGrey,
-          primaryForegroundColor: Colors.white,
-        ));
+        floatingActionButton: FloatingActionButton(
+          child: Icon(Icons.add),
+          onPressed: () => showDialog(
+              context: context,
+              barrierDismissible: true,
+              builder: (BuildContext context) {
+                return AddShelve(width: widthScreen(context));
+              }),
+        )
+        // SpeedDialFabWidget(
+        //     primaryIconExpand: Icons.add,
+        //     primaryIconCollapse: Icons.clear,
+        //     secondaryIconsList: [
+        //       Icons.local_grocery_store_outlined,
+        //       Icons.amp_stories_outlined,
+        //     ],
+        //     secondaryIconsText: [
+        //       "Adicionar Produto",
+        //       "Adicionar Prateleira",
+        //     ],
+        //     secondaryIconsOnPress: [
+        //       () => Navigator.push(
+        //             context,
+        //             MaterialPageRoute(builder: (context) => AddProductPage()),
+        //           ),
+        //       () => showDialog(
+        //           context: context,
+        //           barrierDismissible: true,
+        //           builder: (BuildContext context) {
+        //             return AddShelve(width: widthScreen(context));
+        //           }),
+        //     ],
+        //     primaryBackgroundColor: Colors.blueGrey,
+        //     primaryForegroundColor: Colors.white,
+        //   )
+        );
+  }
+
+  Widget familyDialog() {
+    return FamilyDialog(
+        text1: 'Família Existente',
+        text2: 'Criar Família',
+        action1: () => showDialog(
+            context: context,
+            builder: (BuildContext context) => ExistingFamilyDialog()),
+        action2: () => showDialog(
+            context: context,
+            builder: (BuildContext context) => NewFamilyDialog()));
   }
 }

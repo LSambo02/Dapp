@@ -16,3 +16,7 @@ String produtos_colecao = "produtos";
 String familias_colecao = "familias";
 String app_link = "";
 final String currency = UniversalPlatform.isWeb ? '.00MZN' : '0MZN';
+
+// assets
+
+final shelveIcon = 'assets/prateleira.png';

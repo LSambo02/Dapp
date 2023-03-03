@@ -3,6 +3,10 @@ import 'package:despensa/services/prateleira_service.dart';
 import 'package:despensa/utils/GetIt.dart';
 import 'package:flutter/material.dart';
 
+import '../utils/AppPhoneSize.dart';
+import 'custom_rounded_button.dart';
+import 'custom_textformfield.dart';
+
 class AddShelve extends StatelessWidget {
   double width;
   Shelve prateleira = Shelve.empty();
@@ -15,90 +19,52 @@ class AddShelve extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 50,
-      width: MediaQuery.of(context).size.width,
+      width: widthScreen(context),
       child: AlertDialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-        title: Center(child: Text('ADICONAR PRATELEIRA')),
+        backgroundColor: Color.fromRGBO(112, 128, 144, 1.0),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+        title: Center(
+            child: Text(
+          'ADICONAR PRATELEIRA',
+          style: TextStyle(fontSize: 20, color: Colors.white),
+        )),
         content: Container(
-            width: width,
-            height: 100,
-            child: TextField(
-              onChanged: (value) => prateleira.setNome(value),
-              decoration: InputDecoration(hintText: 'Nome da Prateleira'),
+            width: widthScreen(context) / 1.5,
+            // height: heightScreen(context) / 6,
+            child: CustomTextFormField(
+              action: (value) => prateleira.setNome(value),
+              hintText: 'Nome da Prateleira',
             )),
         actions: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              ButtonTheme(
-                height: 40,
-                minWidth: 30,
-                child: Container(
-                  margin: EdgeInsets.only(right: 12),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      ElevatedButton(
-                          style: ButtonStyle(
-                              shape: MaterialStateProperty.all<OutlinedBorder>(
-                                  RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10.0),
-                          ))),
-                          child: Text(
-                            'ADICIONAR',
-                            style: TextStyle(color: Colors.black),
-                          ),
-                          onPressed: () async {
-                            getIt<PrateleiraService>()
-                                .addShelve(prateleira)
-                                .whenComplete(() {})
-                                .then((value) {
-                              Navigator.pop(context);
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        value,
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                            fontSize: 14.0,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                    ],
-                                  ),
-                                  duration: Duration(seconds: 3),
-                                  // backgroundColor: Colors.blue,
-                                ),
-                              );
-                            });
-                          }),
-                      SizedBox(
-                        width: width / 40,
+          Center(
+            child: CustomRoundedButton(
+                text: 'CONFIRMAR',
+                action: () async {
+                  getIt<PrateleiraService>()
+                      .addShelve(prateleira)
+                      .whenComplete(() {})
+                      .then((value) {
+                    Navigator.pop(context);
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              value,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  fontSize: 14.0, fontWeight: FontWeight.bold),
+                            ),
+                          ],
+                        ),
+                        duration: Duration(seconds: 3),
+                        // backgroundColor: Colors.blue,
                       ),
-                      ElevatedButton(
-                          child: Text(
-                            'CANCELAR',
-                            style: TextStyle(color: Colors.black45),
-                          ),
-                          style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all<Color>(
-                                  Colors.white),
-                              shape: MaterialStateProperty.all<OutlinedBorder>(
-                                  RoundedRectangleBorder(
-                                      borderRadius:
-                                          BorderRadius.circular(10)))),
-                          onPressed: () => Navigator.pop(context)),
-                    ],
-                  ),
-                ),
-              ),
-            ],
-          )
+                    );
+                  });
+                }),
+          ),
         ],
       ),
     );

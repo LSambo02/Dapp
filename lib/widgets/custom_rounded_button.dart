@@ -16,7 +16,10 @@ class CustomRoundedButton extends StatelessWidget {
         child: Text(
           text!,
           textAlign: TextAlign.center,
-          style: TextStyle(fontSize: 18, color: shadesOfGrey[0]),
+          style: TextStyle(
+              fontSize: 18,
+              color: shadesOfGrey[0],
+              fontWeight: FontWeight.w800),
         ),
         onPressed: action,
         style: ButtonStyle(

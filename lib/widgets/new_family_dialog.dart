@@ -36,7 +36,7 @@ class _NewFamilyDialogState extends State<NewFamilyDialog> {
           ),
         ),
         content: Container(
-          height: heightScreen(context) / 7,
+          height: heightScreen(context) / 6,
           child: Column(
             children: [
               Container(
