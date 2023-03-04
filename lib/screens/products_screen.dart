@@ -92,11 +92,11 @@ class _ProductsPageState extends State<ProductsPage> {
                         );
                       }
                       int index = 0;
-                      // if (getIt<ListaComprasController>()
-                      //     .listaDeCompra
-                      //     .isNotEmpty) {
-                      //   getIt<ListaComprasController>().reset();
-                      // }
+                      if (getIt<ListaComprasController>()
+                          .listaDeCompra
+                          .isNotEmpty) {
+                        getIt<ListaComprasController>().reset();
+                      }
 
                       // _produtosMap = snapshot.data as Map<String, dynamic>;
                       // log('hummm ${Produto.fromJson(snapshot.data)}');
@@ -115,25 +115,25 @@ class _ProductsPageState extends State<ProductsPage> {
                                 Produto produto =
                                     Produto.fromJson(_produtosMap);
                                 produto.setId(document.id);
-                                // if (produto.qntdMinima == null ||
-                                //     produto.qntdMinima == 0) {
-                                //   int percent = ((produto.disponivel * 100) /
-                                //           produto.quantidade)
-                                //       .round();
-                                //   if (percent <=
-                                //       getIt<FamiliaService>()
-                                //           .familia
-                                //           .qntdMinima) {
-                                //     getIt<ListaComprasController>()
-                                //         .addProductItem(produto);
-                                //   }
-                                // } else {
-                                //   if (produto.qntdMinima >=
-                                //       produto.disponivel) {
-                                //     getIt<ListaComprasController>()
-                                //         .addProductItem(produto);
-                                //   }
-                                // }
+                                if (produto.qntdMinima.isNaN ||
+                                    produto.qntdMinima == 0) {
+                                  int percent = ((produto.disponivel * 100) /
+                                          produto.quantidade)
+                                      .round();
+                                  if (percent <=
+                                      getIt<FamiliaService>()
+                                          .familia
+                                          .qntdMinima) {
+                                    getIt<ListaComprasController>()
+                                        .addProductItem(produto);
+                                  }
+                                } else {
+                                  if (produto.qntdMinima >=
+                                      produto.disponivel) {
+                                    getIt<ListaComprasController>()
+                                        .addProductItem(produto);
+                                  }
+                                }
 
                                 // log(getIt<ProdutosServices>()
                                 //     .listaDeCompra

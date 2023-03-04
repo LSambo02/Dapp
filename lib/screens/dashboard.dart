@@ -11,15 +11,13 @@ import 'package:despensa/utils/app_colors.dart';
 import 'package:despensa/utils/constantes.dart';
 import 'package:despensa/utils/sharedPreferences.dart';
 import 'package:despensa/widgets/add_shelve_dialog.dart';
-import 'package:despensa/widgets/family_menu_dialog.dart';
-import 'package:despensa/widgets/new_family_dialog.dart';
 import 'package:despensa/widgets/no_data.dart';
 import 'package:despensa/widgets/remove_shelve_dialog.dart';
 import 'package:flutter/material.dart';
 
 import '../services/produto_service.dart';
+import '../widgets/custom_family_dialog.dart';
 import '../widgets/custom_rounded_button.dart';
-import '../widgets/existing_family_dialog.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({Key? key}) : super(key: key);
@@ -82,14 +80,14 @@ class _DashboardState extends State<Dashboard> {
                       padding: const EdgeInsets.only(top: 15.0, left: 10),
                       child: Column(
                         children: [
-                          IconButton(
-                            icon: Icon(
-                              Icons.shopping_basket_outlined,
-                              color: Colors.white,
-                            ),
-                            onPressed: () => Navigator.pushNamed(
-                                context, lista_compras_screen),
-                          ),
+                          // IconButton(
+                          //   icon: Icon(
+                          //     Icons.shopping_basket_outlined,
+                          //     color: Colors.white,
+                          //   ),
+                          //   onPressed: () => Navigator.pushNamed(
+                          //       context, lista_compras_screen),
+                          // ),
                           IconButton(
                               icon: Icon(Icons.settings_outlined,
                                   color: Colors.white),
@@ -99,7 +97,7 @@ class _DashboardState extends State<Dashboard> {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(top: 50.0, left: 10),
+                      padding: const EdgeInsets.only(top: 30, left: 10),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -171,7 +169,8 @@ class _DashboardState extends State<Dashboard> {
                         text: 'Aderir a Família',
                         action: () => showDialog(
                             context: context,
-                            builder: (BuildContext context) => familyDialog()),
+                            builder: (BuildContext context) =>
+                                familyDialog(context)),
                       ))
                     : StreamBuilder<QuerySnapshot>(
                         stream: getIt<PrateleiraService>()
@@ -354,17 +353,5 @@ class _DashboardState extends State<Dashboard> {
         //     primaryForegroundColor: Colors.white,
         //   )
         );
-  }
-
-  Widget familyDialog() {
-    return FamilyDialog(
-        text1: 'Família Existente',
-        text2: 'Criar Família',
-        action1: () => showDialog(
-            context: context,
-            builder: (BuildContext context) => ExistingFamilyDialog()),
-        action2: () => showDialog(
-            context: context,
-            builder: (BuildContext context) => NewFamilyDialog()));
   }
 }

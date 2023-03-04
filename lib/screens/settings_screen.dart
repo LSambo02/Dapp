@@ -4,9 +4,12 @@ import 'package:despensa/utils/AppPhoneSize.dart';
 import 'package:despensa/utils/GetIt.dart';
 import 'package:despensa/utils/constantes.dart';
 import 'package:despensa/widgets/custom_appBar.dart';
+import 'package:despensa/widgets/custom_family_dialog.dart';
 import 'package:despensa/widgets/custom_rounded_button.dart';
 import 'package:flutter/material.dart';
 import 'package:share_plus/share_plus.dart';
+
+import '../widgets/custom_rounded_card_dutton.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({Key? key}) : super(key: key);
@@ -255,30 +258,26 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   //         );
                   //       }),
                   // ),
-                  Container(
-                    margin: EdgeInsets.all(20),
-                    padding: EdgeInsets.all(0),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(30),
-                      border: Border.all(color: Colors.blue),
-                    ),
-                    child: Card(
-                      margin: EdgeInsets.all(0),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30)),
-                      child: ListTile(
-                        title: Text('Convidar para Lar'),
-                        leading: Icon(Icons.share),
-                        onTap: () {
-                          Share.share(
-                              'Olá,\nConvido-o a fazer parte do meu '
-                              'lar para gestão do rancho, use este código '
-                              'após fazer o login [${getIt<FamiliaService>().familia.id}]',
-                              subject: app_link);
-                        },
-                      ),
-                    ),
+                  CustomRoundedLightButton(
+                    text: 'Convidar para Lar',
+                    icon: Icons.share,
+                    action: () {
+                      Share.share(
+                          'Olá,\nConvido-o a fazer parte do meu '
+                          'lar para gestão do rancho, use este código '
+                          'após fazer o login [${getIt<FamiliaService>().familia.id}]',
+                          subject: app_link);
+                    },
                   ),
+                  CustomRoundedLightButton(
+                    text: 'Adicionar Familia',
+                    icon: Icons.add,
+                    action: () => showDialog(
+                        context: context,
+                        builder: (BuildContext context) =>
+                            familyDialog(context)),
+                  ),
+
                   // CustomSwitch(
                   //   width: widthScreen(context),
                   //   val: _isDarkMode,
