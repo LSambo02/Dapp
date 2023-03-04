@@ -106,18 +106,19 @@ class _AddProductPageState extends State<AddProductPage> {
               //   height: 20,
               // ),
               CustomDropDownTextField(
-                items: _prateleirasMap,
-                label: 'Prateleira',
-                currentSelectedValue: "Escolha a Prateleira",
-                width: widthScreen(context),
-                validacao: (value){
-                  if (value == null || value.isEmpty || produto.prateleira == null) {
+                  items: _prateleirasMap,
+                  label: 'Prateleira',
+                  currentSelectedValue: "Escolha a Prateleira",
+                  width: widthScreen(context),
+                  validacao: (value) {
+                    if (value == null ||
+                        value.isEmpty ||
+                        produto.prateleira == null) {
                       return 'Seleccione uma prateleira';
                     }
                     return null;
                   },
-                onChange: (value) => produto.setPrateleira(value)
-              ),
+                  onChange: (value) => produto.setPrateleira(value)),
               Container(
                 alignment: Alignment.bottomRight,
                 margin: EdgeInsets.only(right: 12),

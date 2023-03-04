@@ -13,6 +13,8 @@ import 'package:despensa/widgets/custom_shelve_button.dart';
 import 'package:despensa/widgets/no_data.dart';
 import 'package:flutter/material.dart';
 
+import 'add_product_screen.dart';
+
 class ProductsPage extends StatefulWidget {
   const ProductsPage({Key? key}) : super(key: key);
 
@@ -61,7 +63,7 @@ class _ProductsPageState extends State<ProductsPage> {
             //   color: Colors.blueGrey,
             // ),
             Container(
-                height: heightScreen(context) / 1.18,
+                height: heightScreen(context),
                 child: StreamBuilder(
                     stream: produtosService.familias
                         .doc(getIt<FamiliaService>().familia.id)
@@ -90,11 +92,11 @@ class _ProductsPageState extends State<ProductsPage> {
                         );
                       }
                       int index = 0;
-                      if (getIt<ListaComprasController>()
-                          .listaDeCompra
-                          .isNotEmpty) {
-                        getIt<ListaComprasController>().reset();
-                      }
+                      // if (getIt<ListaComprasController>()
+                      //     .listaDeCompra
+                      //     .isNotEmpty) {
+                      //   getIt<ListaComprasController>().reset();
+                      // }
 
                       // _produtosMap = snapshot.data as Map<String, dynamic>;
                       // log('hummm ${Produto.fromJson(snapshot.data)}');
@@ -139,7 +141,7 @@ class _ProductsPageState extends State<ProductsPage> {
                                 //     .toString());
 
                                 index = ++index;
-                                return buildCardButton(index,
+                                return CustomCardButton(index,
                                     title: _produtosMap['nome'], action: () {
                                   Navigator.push(
                                     context,
@@ -154,6 +156,13 @@ class _ProductsPageState extends State<ProductsPage> {
                             );
                     }))
           ],
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+        onPressed: () => Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => AddProductPage()),
         ),
       ),
     );

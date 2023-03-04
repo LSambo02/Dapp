@@ -57,7 +57,7 @@ class ProdutosServices extends ChangeNotifier {
 
         log('produto_service.dart::: product: ${produto.toJson()}');
 
-        if (produto.qntdMinima == null || produto.qntdMinima == 0) {
+        if (produto.qntdMinima.isNaN || produto.qntdMinima == 0) {
           int percent =
               ((produto.disponivel * 100) / produto.quantidade).round();
           if (percent <= getIt<FamiliaService>().familia.qntdMinima) {

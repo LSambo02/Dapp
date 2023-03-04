@@ -20,3 +20,4 @@ final String currency = UniversalPlatform.isWeb ? '.00MZN' : '0MZN';
 // assets
 
 final shelveIcon = 'assets/prateleira.png';
+final groceriesIcon = 'assets/groceries_icon.png';

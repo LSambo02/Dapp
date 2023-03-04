@@ -47,7 +47,7 @@ class _ExistingFamilyDialogState extends State<ExistingFamilyDialog> {
           style: TextStyle(fontSize: 20, color: Colors.white),
         )),
         content: Container(
-          height: heightScreen(context) / 4.4,
+          height: heightScreen(context) / 4,
           child: Form(
             key: _formKey,
             child: Column(

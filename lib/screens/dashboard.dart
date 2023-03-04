@@ -106,7 +106,8 @@ class _DashboardState extends State<Dashboard> {
                           Row(
                             children: [
                               Container(
-                                width: 100,
+                                width: 50,
+                                height: 50,
                                 margin: EdgeInsets.only(right: 10),
                                 child: ClipOval(
                                   child: getIt<AuthService>().user!.photoURL !=
@@ -213,7 +214,6 @@ class _DashboardState extends State<Dashboard> {
                                     getIt<PrateleiraService>()
                                         .addPrateleirasTemp(
                                             shelve.nome, document.id);
-                                    String nrItens = '0';
                                     // if (controller == 0) {
                                     //   log('okay');
                                     produtosService =
@@ -237,6 +237,7 @@ class _DashboardState extends State<Dashboard> {
                                         future: produtosService
                                             .countShelveProducts(shelve),
                                         builder: (context, snapshot) {
+                                          String nrItens = '';
                                           return Padding(
                                             padding: const EdgeInsets.only(
                                                 bottom: 10.0),
@@ -286,7 +287,11 @@ class _DashboardState extends State<Dashboard> {
                                                   leading:
                                                       Image.asset(shelveIcon),
                                                   subtitle: new Text(
-                                                    '${snapshot.data.toString()} itens',
+                                                    snapshot.data
+                                                            .toString()
+                                                            .isNotEmpty
+                                                        ? '${snapshot.data.toString() ?? ''}  itens'
+                                                        : nrItens,
                                                     style: TextStyle(
                                                         fontSize: 20,
                                                         fontWeight:
