@@ -1,6 +1,7 @@
 import 'package:despensa/models/Prateleira.dart';
 import 'package:despensa/screens/create_family_screen.dart';
 import 'package:despensa/screens/dashboard.dart';
+import 'package:despensa/screens/display_listas_compras_screen.dart';
 import 'package:despensa/screens/edit_product_screen.dart';
 import 'package:despensa/screens/enter_family_screen.dart';
 import 'package:despensa/screens/lista_compras_screen.dart';
@@ -86,7 +87,8 @@ class MyApp extends StatelessWidget {
           create_family_screen: (context) => CreateFamilyScreen(),
           settings_screen: (context) => SettingsScreen(),
           lista_compras_screen: (context) => ListaComprasScreen(),
-          edit_product_screen: (context) => EditProductScreen()
+          edit_product_screen: (context) => EditProductScreen(),
+          display_listas_compras: (context) => DisplayListasCompras(),
         },
       );
     });

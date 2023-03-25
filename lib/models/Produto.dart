@@ -10,6 +10,7 @@ class Produto with ChangeNotifier {
       this._descricao,
       this._unidade,
       this._prateleira,
+      // this._tipoProduto,
       this._quantidade,
       this._disponivel,
       this._qntdMinima,
@@ -81,12 +82,14 @@ class Produto with ChangeNotifier {
   }
 
   Produto.fromJson(Map<String, dynamic> json) {
+    _id = json["id"];
     _nome = json["nome"];
     _descricao = json["descricao"];
     _unidade = json["unidade"];
     _quantidade =
         json["quantidade"] != null ? json["quantidade"].toDouble() : 0.0;
     _prateleira = json["prateleira"];
+    // _tipoProduto = json["tipoProduto"];
     _disponivel =
         json["disponivel"] != null ? json["disponivel"].toDouble() : 0.0;
     _qntdMinima =
@@ -101,6 +104,7 @@ class Produto with ChangeNotifier {
     data["unidade"] = this._unidade;
     data["quantidade"] = this._quantidade;
     data["prateleira"] = this._prateleira;
+    // data["tipoProduto"] = this._tipoProduto;
     data["disponivel"] = this._disponivel;
     data["qntdMinima"] = this._qntdMinima;
     data["pUnitario"] = this._pUnit;

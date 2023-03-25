@@ -63,7 +63,7 @@ class _ProductsPageState extends State<ProductsPage> {
             //   color: Colors.blueGrey,
             // ),
             Container(
-                height: heightScreen(context),
+                height: heightScreen(context) / 1.1,
                 child: StreamBuilder(
                     stream: produtosService.familias
                         .doc(getIt<FamiliaService>().familia.id)
@@ -104,7 +104,8 @@ class _ProductsPageState extends State<ProductsPage> {
                           ? NoData()
                           : GridView.count(
                               physics: AlwaysScrollableScrollPhysics(),
-                              padding: EdgeInsets.only(top: 20, left: 10),
+                              padding:
+                                  EdgeInsets.only(top: 20, left: 10, right: 10),
                               crossAxisSpacing: widthScreen(context) / 50,
                               mainAxisSpacing: widthScreen(context) / 50,
                               crossAxisCount: 3,

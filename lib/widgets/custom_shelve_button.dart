@@ -26,7 +26,7 @@ class CustomCardButton extends StatelessWidget {
       elevation: 3,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
       child: Padding(
-        padding: const EdgeInsets.all(20.0),
+        padding: const EdgeInsets.only(left: 05.0),
         child: FittedBox(
           fit: BoxFit.scaleDown,
           child: TextButton(
@@ -39,48 +39,54 @@ class CustomCardButton extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Stack(
-                    alignment: Alignment.topRight,
+                    alignment: Alignment.bottomCenter,
                     children: [
-                      Image.asset(
-                        groceriesIcon,
+                      Stack(
+                        alignment: Alignment.topRight,
+                        children: [
+                          Image.asset(
+                            groceriesIcon,
+                          ),
+                          Container(
+                            padding: EdgeInsets.only(top: 9),
+                            child: Text(
+                              '$disponivel/$total',
+                              style: TextStyle(
+                                  fontSize: 25,
+                                  color: Colors.blueGrey,
+                                  fontWeight: FontWeight.w700),
+                              //
+                            ),
+                          ),
+                        ],
                       ),
-                      Container(
-                        padding: EdgeInsets.only(top: 9),
-                        child: Text(
-                          '$disponivel/$total',
-                          style: TextStyle(
-                              fontSize: 15,
-                              color: Colors.blueGrey,
-                              fontWeight: FontWeight.w700),
-                          //
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 10.0),
+                        child: Center(
+                          child: Text(
+                            title!,
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.w700),
+                          ),
                         ),
                       ),
+                      LinearPercentIndicator(
+                        width: 150,
+                        animation: false,
+                        lineHeight: 10.0,
+                        // animationDuration: 3000,
+                        percent: (percent / 100),
+                        animateFromLastPercent: false,
+                        // center: Text("$percent%"),
+                        barRadius: Radius.circular(30),
+                        progressColor: Colors.blue,
+                        // widgetIndicator: RotatedBox(
+                        //     quarterTurns: 1,
+                        //     child: Icon(Icons.airplanemode_active, size: 50)),
+                      )
                     ],
                   ),
-                  SizedBox(
-                    height: 5,
-                  ),
-                  Center(
-                    child: Text(
-                      title!,
-                      textAlign: TextAlign.center,
-                      style:
-                          TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
-                    ),
-                  ),
-                  LinearPercentIndicator(
-                    width: 150,
-                    animation: false,
-                    lineHeight: 10.0,
-                    // animationDuration: 3000,
-                    percent: (percent / 100),
-                    animateFromLastPercent: false,
-                    // center: Text("$percent%"),
-                    barRadius: Radius.circular(30), progressColor: Colors.blue,
-                    // widgetIndicator: RotatedBox(
-                    //     quarterTurns: 1,
-                    //     child: Icon(Icons.airplanemode_active, size: 50)),
-                  )
                 ],
               ),
             ),

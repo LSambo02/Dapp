@@ -2,10 +2,14 @@ import 'package:despensa/utils/AppPhoneSize.dart';
 import 'package:flutter/material.dart';
 
 class CustomTextFormField extends StatefulWidget {
-  String? hintText;
+  String? hintText, initialText;
   Function(String)? action, validator;
   CustomTextFormField(
-      {Key? key, required this.hintText, this.action, this.validator})
+      {Key? key,
+      required this.hintText,
+      this.action,
+      this.validator,
+      this.initialText})
       : super(key: key);
 
   @override
@@ -26,6 +30,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
         },
         // cursorColor: ,
         textAlign: TextAlign.center,
+        initialValue: widget.initialText,
         // style: TextStyle(color: Colors.white),
         decoration: InputDecoration(
           enabledBorder: UnderlineInputBorder(

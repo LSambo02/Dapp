@@ -4,11 +4,10 @@ import 'package:flutter/material.dart';
 class RemoveShelveDialog extends StatelessWidget {
   double width;
   Shelve prateleira = Shelve.empty();
+  String? item;
   TextEditingController minionNameController = TextEditingController();
   late GlobalKey<ScaffoldState> scaffoldKey;
-  RemoveShelveDialog({
-    required this.width,
-  });
+  RemoveShelveDialog({required this.width, required this.item});
 
   @override
   Widget build(BuildContext context) {
@@ -17,11 +16,11 @@ class RemoveShelveDialog extends StatelessWidget {
       width: MediaQuery.of(context).size.width,
       child: AlertDialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-        title: Center(child: Text('REMOVER PRATELEIRA')),
+        title: Center(child: Text('REMOVER $item')),
         content: Container(
             width: width,
             height: 100,
-            child: Text('Realmente deseja remover esta prateleira?')),
+            child: Text('Realmente deseja remover esta $item?')),
         actions: [
           Row(
             mainAxisAlignment: MainAxisAlignment.center,

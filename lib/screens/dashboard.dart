@@ -127,23 +127,47 @@ class _DashboardState extends State<Dashboard> {
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Row(
-                                    children: [
-                                      Text(
-                                        "Olá, ${getIt<AuthService>().user!.displayName ?? getIt<AuthService>().user!.email} ",
-                                        style: TextStyle(
-                                            fontSize: 25, color: Colors.white),
-                                      ),
-                                    ],
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 8.0),
+                                    child: Row(
+                                      children: [
+                                        Text(
+                                          "Olá, ${getIt<AuthService>().user!.displayName ?? getIt<AuthService>().user!.email} ",
+                                          style: TextStyle(
+                                              fontSize: 25,
+                                              color: Colors.white),
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                   familyName.isNotEmpty
-                                      ? Text(
-                                          "Família $familyName",
-                                          style: TextStyle(color: Colors.white),
+                                      ? Padding(
+                                          padding:
+                                              const EdgeInsets.only(left: 8.0),
+                                          child: Text(
+                                            "Família $familyName",
+                                            style:
+                                                TextStyle(color: Colors.white),
+                                          ),
                                         )
-                                      : Text("Sem Família",
-                                          style:
-                                              TextStyle(color: Colors.white)),
+                                      : Padding(
+                                          padding:
+                                              const EdgeInsets.only(left: 8.0),
+                                          child: Text("Sem Família",
+                                              style: TextStyle(
+                                                  color: Colors.white)),
+                                        ),
+                                  Padding(
+                                    padding: const EdgeInsets.all(0.0),
+                                    child: TextButton(
+                                      child: Text(
+                                        "VER MINHAS LISTAS",
+                                        style: TextStyle(color: Colors.white),
+                                      ),
+                                      onPressed: () => Navigator.pushNamed(
+                                          context, display_listas_compras),
+                                    ),
+                                  )
                                 ],
                               ),
                             ],
@@ -263,6 +287,7 @@ class _DashboardState extends State<Dashboard> {
                                                         return RemoveShelveDialog(
                                                           width: widthScreen(
                                                               context),
+                                                          item: 'PRATELEIRA',
                                                         );
                                                       }),
                                               child: Card(
