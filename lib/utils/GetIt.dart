@@ -2,6 +2,7 @@ import 'package:despensa/models/Prateleira.dart';
 import 'package:despensa/services/ListaComprasController.dart';
 import 'package:despensa/services/auth_service.dart';
 import 'package:despensa/services/familia_service.dart';
+import 'package:despensa/services/lista_compras_service.dart';
 import 'package:despensa/services/prateleira_service.dart';
 import 'package:despensa/services/produto_service.dart';
 import 'package:despensa/utils/app_colors.dart';
@@ -19,4 +20,5 @@ void setUpGetIt() {
   getIt.registerLazySingleton(() => ListaComprasController());
   getIt.registerLazySingleton(() => ThemeChanger());
   getIt.registerLazySingleton(() => Shelve());
+  getIt.registerLazySingleton(() => ListaComprasService());
 }

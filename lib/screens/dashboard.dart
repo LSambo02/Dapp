@@ -11,17 +11,13 @@ import 'package:despensa/utils/app_colors.dart';
 import 'package:despensa/utils/constantes.dart';
 import 'package:despensa/utils/sharedPreferences.dart';
 import 'package:despensa/widgets/add_shelve_dialog.dart';
-import 'package:despensa/widgets/family_menu_dialog.dart';
-import 'package:despensa/widgets/new_family_dialog.dart';
 import 'package:despensa/widgets/no_data.dart';
 import 'package:despensa/widgets/remove_shelve_dialog.dart';
 import 'package:flutter/material.dart';
-import 'package:speed_dial_fab/speed_dial_fab.dart';
 
 import '../services/produto_service.dart';
+import '../widgets/custom_family_dialog.dart';
 import '../widgets/custom_rounded_button.dart';
-import '../widgets/existing_family_dialog.dart';
-import 'add_product_screen.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({Key? key}) : super(key: key);
@@ -84,14 +80,14 @@ class _DashboardState extends State<Dashboard> {
                       padding: const EdgeInsets.only(top: 15.0, left: 10),
                       child: Column(
                         children: [
-                          IconButton(
-                            icon: Icon(
-                              Icons.shopping_basket_outlined,
-                              color: Colors.white,
-                            ),
-                            onPressed: () => Navigator.pushNamed(
-                                context, lista_compras_screen),
-                          ),
+                          // IconButton(
+                          //   icon: Icon(
+                          //     Icons.shopping_basket_outlined,
+                          //     color: Colors.white,
+                          //   ),
+                          //   onPressed: () => Navigator.pushNamed(
+                          //       context, lista_compras_screen),
+                          // ),
                           IconButton(
                               icon: Icon(Icons.settings_outlined,
                                   color: Colors.white),
@@ -101,13 +97,15 @@ class _DashboardState extends State<Dashboard> {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(top: 50.0, left: 10),
+                      padding: const EdgeInsets.only(top: 30, left: 10),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Row(
                             children: [
                               Container(
+                                width: 50,
+                                height: 50,
                                 margin: EdgeInsets.only(right: 10),
                                 child: ClipOval(
                                   child: getIt<AuthService>().user!.photoURL !=
@@ -129,23 +127,47 @@ class _DashboardState extends State<Dashboard> {
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Row(
-                                    children: [
-                                      Text(
-                                        "Olá, ${getIt<AuthService>().user!.displayName ?? getIt<AuthService>().user!.email} ",
-                                        style: TextStyle(
-                                            fontSize: 25, color: Colors.white),
-                                      ),
-                                    ],
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 8.0),
+                                    child: Row(
+                                      children: [
+                                        Text(
+                                          "Olá, ${getIt<AuthService>().user!.displayName ?? getIt<AuthService>().user!.email} ",
+                                          style: TextStyle(
+                                              fontSize: 25,
+                                              color: Colors.white),
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                   familyName.isNotEmpty
-                                      ? Text(
-                                          "Família $familyName",
-                                          style: TextStyle(color: Colors.white),
+                                      ? Padding(
+                                          padding:
+                                              const EdgeInsets.only(left: 8.0),
+                                          child: Text(
+                                            "Família $familyName",
+                                            style:
+                                                TextStyle(color: Colors.white),
+                                          ),
                                         )
-                                      : Text("Sem Família",
-                                          style:
-                                              TextStyle(color: Colors.white)),
+                                      : Padding(
+                                          padding:
+                                              const EdgeInsets.only(left: 8.0),
+                                          child: Text("Sem Família",
+                                              style: TextStyle(
+                                                  color: Colors.white)),
+                                        ),
+                                  Padding(
+                                    padding: const EdgeInsets.all(0.0),
+                                    child: TextButton(
+                                      child: Text(
+                                        "VER MINHAS LISTAS",
+                                        style: TextStyle(color: Colors.white),
+                                      ),
+                                      onPressed: () => Navigator.pushNamed(
+                                          context, display_listas_compras),
+                                    ),
+                                  )
                                 ],
                               ),
                             ],
@@ -171,17 +193,8 @@ class _DashboardState extends State<Dashboard> {
                         text: 'Aderir a Família',
                         action: () => showDialog(
                             context: context,
-                            builder: (BuildContext context) => FamilyDialog(
-                                text1: 'Família Existente',
-                                text2: 'Criar Família',
-                                action1: () => showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) =>
-                                        ExistingFamilyDialog()),
-                                action2: () => showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) =>
-                                        NewFamilyDialog()))),
+                            builder: (BuildContext context) =>
+                                familyDialog(context)),
                       ))
                     : StreamBuilder<QuerySnapshot>(
                         stream: getIt<PrateleiraService>()
@@ -207,8 +220,8 @@ class _DashboardState extends State<Dashboard> {
                               child: Text("SEM DADOS"),
                             );
                           }
-                          List shlvs = [];
-                          for (var shlv in snapshot.data!.docs) {}
+                          // List shlvs = [];
+                          // for (var shlv in snapshot.data!.docs) {}
                           return snapshot.data!.docs.length == 0
                               ? NoData()
                               : ListView(
@@ -224,7 +237,6 @@ class _DashboardState extends State<Dashboard> {
                                     getIt<PrateleiraService>()
                                         .addPrateleirasTemp(
                                             shelve.nome, document.id);
-                                    String nrItens = '0';
                                     // if (controller == 0) {
                                     //   log('okay');
                                     produtosService =
@@ -248,6 +260,7 @@ class _DashboardState extends State<Dashboard> {
                                         future: produtosService
                                             .countShelveProducts(shelve),
                                         builder: (context, snapshot) {
+                                          String nrItens = '';
                                           return Padding(
                                             padding: const EdgeInsets.only(
                                                 bottom: 10.0),
@@ -274,6 +287,7 @@ class _DashboardState extends State<Dashboard> {
                                                         return RemoveShelveDialog(
                                                           width: widthScreen(
                                                               context),
+                                                          item: 'PRATELEIRA',
                                                         );
                                                       }),
                                               child: Card(
@@ -294,10 +308,14 @@ class _DashboardState extends State<Dashboard> {
                                                         fontSize: 20,
                                                         color: Colors.black),
                                                   ),
-                                                  leading: Icon(Icons
-                                                      .amp_stories_outlined),
+                                                  leading:
+                                                      Image.asset(shelveIcon),
                                                   subtitle: new Text(
-                                                    '${snapshot.data.toString()} itens',
+                                                    snapshot.data
+                                                            .toString()
+                                                            .isNotEmpty
+                                                        ? '${snapshot.data.toString() ?? ''}  itens'
+                                                        : nrItens,
                                                     style: TextStyle(
                                                         fontSize: 20,
                                                         fontWeight:
@@ -324,31 +342,41 @@ class _DashboardState extends State<Dashboard> {
             ],
           ),
         ),
-        floatingActionButton: SpeedDialFabWidget(
-          primaryIconExpand: Icons.add,
-          primaryIconCollapse: Icons.clear,
-          secondaryIconsList: [
-            Icons.local_grocery_store_outlined,
-            Icons.amp_stories_outlined,
-          ],
-          secondaryIconsText: [
-            "Adicionar Produto",
-            "Adicionar Prateleira",
-          ],
-          secondaryIconsOnPress: [
-            () => Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => AddProductPage()),
-                ),
-            () => showDialog(
-                context: context,
-                barrierDismissible: true,
-                builder: (BuildContext context) {
-                  return AddShelve(width: widthScreen(context));
-                }),
-          ],
-          primaryBackgroundColor: Colors.blueGrey,
-          primaryForegroundColor: Colors.white,
-        ));
+        floatingActionButton: FloatingActionButton(
+          child: Icon(Icons.add),
+          onPressed: () => showDialog(
+              context: context,
+              barrierDismissible: true,
+              builder: (BuildContext context) {
+                return AddShelve(width: widthScreen(context));
+              }),
+        )
+        // SpeedDialFabWidget(
+        //     primaryIconExpand: Icons.add,
+        //     primaryIconCollapse: Icons.clear,
+        //     secondaryIconsList: [
+        //       Icons.local_grocery_store_outlined,
+        //       Icons.amp_stories_outlined,
+        //     ],
+        //     secondaryIconsText: [
+        //       "Adicionar Produto",
+        //       "Adicionar Prateleira",
+        //     ],
+        //     secondaryIconsOnPress: [
+        //       () => Navigator.push(
+        //             context,
+        //             MaterialPageRoute(builder: (context) => AddProductPage()),
+        //           ),
+        //       () => showDialog(
+        //           context: context,
+        //           barrierDismissible: true,
+        //           builder: (BuildContext context) {
+        //             return AddShelve(width: widthScreen(context));
+        //           }),
+        //     ],
+        //     primaryBackgroundColor: Colors.blueGrey,
+        //     primaryForegroundColor: Colors.white,
+        //   )
+        );
   }
 }

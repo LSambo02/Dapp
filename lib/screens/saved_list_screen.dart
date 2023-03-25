@@ -10,40 +10,30 @@ import 'package:despensa/utils/GetIt.dart';
 import 'package:despensa/utils/constantes.dart';
 import 'package:despensa/widgets/compraItem.dart';
 import 'package:despensa/widgets/custom_appBar.dart';
-import 'package:despensa/widgets/custom_save_dialog.dart';
 import 'package:flutter/material.dart';
-import 'package:mobx/mobx.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:universal_platform/universal_platform.dart';
 
-class ListaComprasScreen extends StatefulWidget {
-  const ListaComprasScreen({Key? key}) : super(key: key);
+class SavedListComprasScreen extends StatefulWidget {
+  List? items;
+  String? nome;
+  SavedListComprasScreen({Key? key, required this.items, required this.nome})
+      : super(key: key);
 
   @override
-  _ListaComprasScreenState createState() => _ListaComprasScreenState();
+  _SavedListComprasScreenState createState() => _SavedListComprasScreenState();
 }
 
-class _ListaComprasScreenState extends State<ListaComprasScreen> {
+class _SavedListComprasScreenState extends State<SavedListComprasScreen> {
   late String familyName;
-  ObservableList items = getIt<ListaComprasController>().listaDeCompra;
   late ProdutosServices produtosServices;
   String sharableList = '';
-  // @override
-  // void initState() {
-  //   getIt<UserState>().readFamilyId().then((value) {
-  //     if (value != null) getIt<FamiliaService>().setFamiliaId(value);
-  //     getIt<FamiliaService>().getFamilyName(value).then((value) {
-  //       setState(() {
-  //         familyName = value;
-  //       });
-  //     });
-  //   });
-  // }
 
   @override
   Widget build(BuildContext context) {
     double total = 0;
-    for (Produto prod in items) {
+    for (Map<String, dynamic> prodMap in widget.items!) {
+      Produto prod = Produto.fromJson(prodMap);
       double qntd = prod.quantidade - prod.disponivel;
       double subtotal = 0;
       log('lista_compras_screen.dart::: prod: ${prod.toJson()}');
@@ -69,18 +59,18 @@ class _ListaComprasScreenState extends State<ListaComprasScreen> {
               margin: EdgeInsets.only(right: 15),
               child: Row(
                 children: [
-                  IconButton(
-                    icon: Icon(
-                      Icons.save,
-                      color: Colors.white,
-                    ),
-                    onPressed: () {
-                      showDialog(
-                          context: context,
-                          builder: (BuildContext context) =>
-                              SaveDialog(items!.toList()));
-                    },
-                  ),
+                  // IconButton(
+                  //   icon: Icon(
+                  //     Icons.save,
+                  //     color: Colors.white,
+                  //   ),
+                  //   onPressed: () {
+                  //     showDialog(
+                  //         context: context,
+                  //         builder: (BuildContext context) =>
+                  //             SaveDialog(widget.items!.toList()));
+                  //   },
+                  // ),
                   IconButton(
                     icon: Icon(
                       !UniversalPlatform.isIOS
@@ -130,7 +120,7 @@ class _ListaComprasScreenState extends State<ListaComprasScreen> {
                     thickness: 1,
                   ),
                   itemBuilder: (context, int index) {
-                    Produto produto = items[index];
+                    Produto produto = Produto.fromJson(widget.items![index]);
                     double qntd = produto.quantidade - produto.disponivel;
                     produtosServices = ProdutosServices(
                         getIt<PrateleiraService>()
@@ -194,7 +184,7 @@ class _ListaComprasScreenState extends State<ListaComprasScreen> {
                       },
                     );
                   },
-                  itemCount: items.length,
+                  itemCount: widget.items!.length,
                 ))
           ],
         ),

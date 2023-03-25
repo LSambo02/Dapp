@@ -59,7 +59,7 @@ class _CustomDropDownTextFieldState extends State<CustomDropDownTextField> {
                 borderRadius: BorderRadius.circular(60),
                 child: DropdownButtonHideUnderline(
                   child: DropdownButton<dynamic>(
-                    dropdownColor: Colors.blueGrey,
+                    // dropdownColor: Colors.blueGrey,
                     // decoration: InputDecoration(
                     //   fillColor: Colors.blueGrey,
                     //   // border: OutlineInputBorder(

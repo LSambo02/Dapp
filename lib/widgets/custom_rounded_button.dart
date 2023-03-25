@@ -5,7 +5,12 @@ import 'package:flutter/material.dart';
 class CustomRoundedButton extends StatelessWidget {
   String? text;
   Function()? action;
-  CustomRoundedButton({Key? key, required this.text, required this.action})
+  bool colorSwitch;
+  CustomRoundedButton(
+      {Key? key,
+      required this.text,
+      required this.action,
+      this.colorSwitch = false})
       : super(key: key);
 
   @override
@@ -16,14 +21,19 @@ class CustomRoundedButton extends StatelessWidget {
         child: Text(
           text!,
           textAlign: TextAlign.center,
-          style: TextStyle(fontSize: 18, color: shadesOfGrey[0]),
+          style: TextStyle(
+              fontSize: 18,
+              color: colorSwitch ? Colors.white : shadesOfGrey[0],
+              fontWeight: FontWeight.w800),
         ),
         onPressed: action,
         style: ButtonStyle(
             shape: MaterialStateProperty.all<OutlinedBorder>(
                 RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30))),
-            backgroundColor: MaterialStateProperty.all<Color>(Colors.white)),
+            backgroundColor: colorSwitch
+                ? MaterialStateProperty.all<Color>(shadesOfGrey[0])
+                : MaterialStateProperty.all<Color>(Colors.white)),
       ),
     );
   }

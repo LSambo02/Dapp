@@ -13,6 +13,8 @@ import 'package:despensa/widgets/custom_shelve_button.dart';
 import 'package:despensa/widgets/no_data.dart';
 import 'package:flutter/material.dart';
 
+import 'add_product_screen.dart';
+
 class ProductsPage extends StatefulWidget {
   const ProductsPage({Key? key}) : super(key: key);
 
@@ -61,7 +63,7 @@ class _ProductsPageState extends State<ProductsPage> {
             //   color: Colors.blueGrey,
             // ),
             Container(
-                height: heightScreen(context) / 1.18,
+                height: heightScreen(context) / 1.1,
                 child: StreamBuilder(
                     stream: produtosService.familias
                         .doc(getIt<FamiliaService>().familia.id)
@@ -102,7 +104,8 @@ class _ProductsPageState extends State<ProductsPage> {
                           ? NoData()
                           : GridView.count(
                               physics: AlwaysScrollableScrollPhysics(),
-                              padding: EdgeInsets.only(top: 20, left: 10),
+                              padding:
+                                  EdgeInsets.only(top: 20, left: 10, right: 10),
                               crossAxisSpacing: widthScreen(context) / 50,
                               mainAxisSpacing: widthScreen(context) / 50,
                               crossAxisCount: 3,
@@ -113,25 +116,25 @@ class _ProductsPageState extends State<ProductsPage> {
                                 Produto produto =
                                     Produto.fromJson(_produtosMap);
                                 produto.setId(document.id);
-                                // if (produto.qntdMinima == null ||
-                                //     produto.qntdMinima == 0) {
-                                //   int percent = ((produto.disponivel * 100) /
-                                //           produto.quantidade)
-                                //       .round();
-                                //   if (percent <=
-                                //       getIt<FamiliaService>()
-                                //           .familia
-                                //           .qntdMinima) {
-                                //     getIt<ListaComprasController>()
-                                //         .addProductItem(produto);
-                                //   }
-                                // } else {
-                                //   if (produto.qntdMinima >=
-                                //       produto.disponivel) {
-                                //     getIt<ListaComprasController>()
-                                //         .addProductItem(produto);
-                                //   }
-                                // }
+                                if (produto.qntdMinima.isNaN ||
+                                    produto.qntdMinima == 0) {
+                                  int percent = ((produto.disponivel * 100) /
+                                          produto.quantidade)
+                                      .round();
+                                  if (percent <=
+                                      getIt<FamiliaService>()
+                                          .familia
+                                          .qntdMinima) {
+                                    getIt<ListaComprasController>()
+                                        .addProductItem(produto);
+                                  }
+                                } else {
+                                  if (produto.qntdMinima >=
+                                      produto.disponivel) {
+                                    getIt<ListaComprasController>()
+                                        .addProductItem(produto);
+                                  }
+                                }
 
                                 // log(getIt<ProdutosServices>()
                                 //     .listaDeCompra
@@ -139,7 +142,7 @@ class _ProductsPageState extends State<ProductsPage> {
                                 //     .toString());
 
                                 index = ++index;
-                                return buildCardButton(index,
+                                return CustomCardButton(index,
                                     title: _produtosMap['nome'], action: () {
                                   Navigator.push(
                                     context,
@@ -154,6 +157,13 @@ class _ProductsPageState extends State<ProductsPage> {
                             );
                     }))
           ],
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+        onPressed: () => Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => AddProductPage()),
         ),
       ),
     );

@@ -1,28 +1,37 @@
+import 'dart:developer';
+
+import 'package:despensa/models/ListaCompras.dart';
+import 'package:despensa/services/lista_compras_service.dart';
 import 'package:despensa/widgets/custom_rounded_button.dart';
 import 'package:despensa/widgets/custom_textformfield.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
-import '../models/Familia.dart';
-import '../services/auth_service.dart';
-import '../services/familia_service.dart';
+import '../models/Produto.dart';
 import '../utils/AppPhoneSize.dart';
 import '../utils/GetIt.dart';
-import '../utils/constantes.dart';
 
-class NewFamilyDialog extends StatefulWidget {
-  NewFamilyDialog({
+class SaveDialog extends StatefulWidget {
+  List? lista;
+
+  SaveDialog(
+    this.lista, {
     Key? key,
   }) : super(key: key);
 
   @override
-  State<NewFamilyDialog> createState() => _NewFamilyDialogState();
+  State<SaveDialog> createState() => _SaveDialogState();
 }
 
-class _NewFamilyDialogState extends State<NewFamilyDialog> {
-  Familia familia = Familia.empty();
+class _SaveDialogState extends State<SaveDialog> {
+  ListaCompras listaCompras = ListaCompras.empty();
+  DateTime now = DateTime.now();
+  final dateF = new DateFormat('dd-MM-yyyy HH:mm:ss');
 
   @override
   Widget build(BuildContext context) {
+    final date = dateF.format(now);
+    listaCompras.setNomeLista('Lista $date');
     return Container(
       width: widthScreen(context),
       child: AlertDialog(
@@ -43,9 +52,10 @@ class _NewFamilyDialogState extends State<NewFamilyDialog> {
                 margin: EdgeInsets.only(top: 10),
                 width: widthScreen(context) / 1.2,
                 child: CustomTextFormField(
-                  hintText: "Nome da Família",
+                  hintText: "Nome da Lista",
+                  initialText: 'Lista $date',
                   action: (value) {
-                    familia.setNome(value);
+                    listaCompras.setNomeLista(value);
                   },
                 ),
               ),
@@ -55,20 +65,22 @@ class _NewFamilyDialogState extends State<NewFamilyDialog> {
               CustomRoundedButton(
                   text: 'Criar',
                   action: () {
-                    familia.setOwner(getIt<AuthService>().userId);
+                    List list = [];
+                    for (Produto p in widget.lista!) {
+                      list.add(p.toJson());
+                    }
+                    log('custom_save_dialog.dart::: ${widget.lista![0].nome}');
+                    listaCompras.setLista(list);
 
-                    getIt<FamiliaService>()
-                        .addFamily(familia)
+                    getIt<ListaComprasService>()
+                        .addListaCompras(listaCompras)
                         .whenComplete(() {})
                         .then((value) {
                       print(value);
-                      setState(() {
-                        // _isLoadingGSignIn = false;
-                        // _isDoneSignIn = true;
-                        // _message = value;
-                      });
-                      Navigator.pushNamedAndRemoveUntil(context,
-                          dashboard_screen, (Route<dynamic> route) => false);
+                      setState(() {});
+                      Navigator.pop(context);
+                      // Navigator.pushNamedAndRemoveUntil(context,
+                      //     dashboard_screen, (Route<dynamic> route) => false);
                     });
                   }),
             ],
