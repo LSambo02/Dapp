@@ -10,7 +10,7 @@ import '../utils/GetIt.dart';
 import '../utils/constantes.dart';
 import '../widgets/custom_appBar.dart';
 import '../widgets/no_data.dart';
-import '../widgets/remove_shelve_dialog.dart';
+import '../widgets/remove_shelf_dialog.dart';
 
 class DisplayListasCompras extends StatefulWidget {
   DisplayListasCompras({Key? key}) : super(key: key);

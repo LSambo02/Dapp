@@ -52,7 +52,7 @@ class _SaveDialogState extends State<SaveDialog> {
                 margin: EdgeInsets.only(top: 10),
                 width: widthScreen(context) / 1.2,
                 child: CustomTextFormField(
-                  hintText: "Nome da Lista",
+                  labelText: "Nome da Lista",
                   initialText: 'Lista $date',
                   action: (value) {
                     listaCompras.setNomeLista(value);

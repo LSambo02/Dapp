@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 
 import '../models/Familia.dart';
@@ -76,7 +78,8 @@ class _ExistingFamilyDialogState extends State<ExistingFamilyDialog> {
 
                         if (familias.isNotEmpty) {
                           widget.dropdownValue = familias.keys.toList()[0];
-                          familiaId = familias[widget.dropdownValue];
+                          if (familiaId == null)
+                            familiaId = familias[widget.dropdownValue];
                         }
 
                         return familias.isNotEmpty
@@ -121,7 +124,7 @@ class _ExistingFamilyDialogState extends State<ExistingFamilyDialog> {
                                           }).toList(),
                                           onSaved: (String? newValue) {
                                             // getIt<UserState>().saveFamilyId(snapshot.data?[newValue]);
-                                            // print(value);
+                                            print(newValue);
 
                                             setState(() {
                                               widget.dropdownValue = newValue!;
@@ -130,10 +133,11 @@ class _ExistingFamilyDialogState extends State<ExistingFamilyDialog> {
                                               // _isDoneSignIn = true;
                                               // _message = value;
                                             });
+                                            log('existing_familiy_dialog.dart::: ${familiaId}');
                                           },
                                           onChanged: (String? newValue) {
                                             // getIt<UserState>().saveFamilyId(snapshot.data?[newValue]);
-                                            // print(value);
+                                            print(newValue);
 
                                             setState(() {
                                               widget.dropdownValue = newValue!;
@@ -142,6 +146,7 @@ class _ExistingFamilyDialogState extends State<ExistingFamilyDialog> {
                                               // _isDoneSignIn = true;
                                               // _message = value;
                                             });
+                                            log('existing_familiy_dialog.dart::: ${familiaId}');
                                           },
                                         ),
                                       ),
@@ -163,7 +168,7 @@ class _ExistingFamilyDialogState extends State<ExistingFamilyDialog> {
                       }
                       return null;
                     },
-                    hintText: "Entrar pelo código",
+                    labelText: "Entrar pelo código",
                     action: (value) {
                       familiaId = value;
                     },
@@ -219,6 +224,8 @@ class _ExistingFamilyDialogState extends State<ExistingFamilyDialog> {
                           });
                         }
                       } else {
+                        log('existing_familiy_dialog.dart::: save: ${familiaId}');
+
                         getIt<UserState>().saveFamilyId(familiaId);
                         Navigator.pushNamedAndRemoveUntil(context,
                             dashboard_screen, (Route<dynamic> route) => false);

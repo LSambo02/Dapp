@@ -10,9 +10,9 @@ import 'package:despensa/utils/GetIt.dart';
 import 'package:despensa/utils/app_colors.dart';
 import 'package:despensa/utils/constantes.dart';
 import 'package:despensa/utils/sharedPreferences.dart';
-import 'package:despensa/widgets/add_shelve_dialog.dart';
+import 'package:despensa/widgets/add_shelf_dialog.dart';
 import 'package:despensa/widgets/no_data.dart';
-import 'package:despensa/widgets/remove_shelve_dialog.dart';
+import 'package:despensa/widgets/remove_shelf_dialog.dart';
 import 'package:flutter/material.dart';
 
 import '../services/produto_service.dart';
