@@ -43,7 +43,7 @@ class _NewFamilyDialogState extends State<NewFamilyDialog> {
                 margin: EdgeInsets.only(top: 10),
                 width: widthScreen(context) / 1.2,
                 child: CustomTextFormField(
-                  hintText: "Nome da Família",
+                  labelText: "Nome da Família",
                   action: (value) {
                     familia.setNome(value);
                   },

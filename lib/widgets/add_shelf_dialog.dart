@@ -33,7 +33,8 @@ class AddShelve extends StatelessWidget {
             // height: heightScreen(context) / 6,
             child: CustomTextFormField(
               action: (value) => prateleira.setNome(value),
-              hintText: 'Nome da Prateleira',
+              hintText: 'Ex: \"Cozinha\"\, \"Quarto de Paito\"',
+              labelText: 'Nome da Prateleira',
             )),
         actions: [
           Center(
@@ -44,7 +45,6 @@ class AddShelve extends StatelessWidget {
                       .addShelve(prateleira)
                       .whenComplete(() {})
                       .then((value) {
-                    Navigator.pop(context);
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         content: Row(
@@ -62,6 +62,7 @@ class AddShelve extends StatelessWidget {
                         // backgroundColor: Colors.blue,
                       ),
                     );
+                    Navigator.pop(context);
                   });
                 }),
           ),
