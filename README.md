@@ -46,9 +46,11 @@ Find screenshots below
 - [x] Estimated prices and "to buy list" with estimated value to be spent
 - [x] Share list in 3rd party apps
 - [x] Allow user to automatically restock a product from "to buy list"
+- [x] disable <b>add product</b> button if no shelve have been created.
+- [x] Save list for future analysis
+
 
 ### WORKING ON
-- [ ] disable <b>add product</b> button if no shelve have been created.
 - [ ] Sub-shelves to a product that can have multiple brands/types
 - [ ] Delete a household
 - [ ] Global "to buy list"
@@ -56,9 +58,6 @@ Find screenshots below
 - [ ] create an alert for products that have already been purchased and that the expiration date is about to expire.
 
 ### FUTURE FEATURES
-- [ ] Save list for future analysis
-
-    Ex: This month I spent more/less than the previous one
 - [ ] Allow user to use different currencies based on his preferences
 - [ ] Temporary Product classification
     
